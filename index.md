@@ -5,7 +5,7 @@
 ### 小菜鸡的学习之路
 1. python
 2. java
-3. c-c++
+3. [c-c++](https://jokerzaia.github.io/C-C++/%E8%BF%9E%E7%BB%93)
 4. matlab
 5. 机器学习
 6. 深度学习
