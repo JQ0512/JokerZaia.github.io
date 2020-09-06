@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C++_primer_plus第1-3章学习笔记</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+<body background="https://image.baidu.com/search/detail?ct=503316480&z=0&ipn=d&word=%E9%AC%BC%E7%81%AD%E4%B9%8B%E5%88%83&step_word=
+&hs=0&pn=22&spn=0&di=105600&pi=0&rn=1&tn=baiduimagedetail&is=0%2C0&istype=2&ie=utf-8&oe=utf-8&in=&cl=2&lm=-1&st=-1&cs=1538565115%2C168
+8036458&os=1935749709%2C3659045419&simid=3429721818%2C166984457&adpicid=0&lpn=0&ln=1821&fr=&fmq=1599381902732_R&fm=detail&ic=0&s=undefined&hd=undefined&
+latest=undefined&copyright=undefined&se=&sme=&tab=0&width=&height=&face=undefined&ist=&jit=&cg=&bdtype=0&oriquery=&objurl=http%3A%2F%2Fpics5.baidu.com%2Ffeed%
+2Ffcfaaf51f3deb48ff88ff41cc3a3b12c2ff5784b.jpeg%3Ftoken%3D82fb75ecc02f293f8ac3191967fe89e9%26s%3D38209F1D144376ED860594E00300E021&fromurl=ippr_z2C%24qAzdH3FAzdH
+3Fooo_z%26e3Bktujg25_z%26e3Bv54AzdH3Ft42AzdH3F8uuv0k1va1bvjwm1aunv1jlk_z%26e3Bip4s&gsm=c&rpstart=0&rpnum=0&islist=&querylist=&force=undefined" 
+style=" background-repeat:no-repeat ;background-size:100% 100%;
+background-attachment: fixed;">
+  <div class="stackedit__html"><h1><a id="C_0"></a>第一章.C++的历史由来</h1>
+<ol>
+<li>C++的编程风格：</li>
+</ol>
+<ul>
+<li><em>C风格的编程模式</em></li>
+<li><em>面向对象的OOP模式</em></li>
+<li><em>C++模板支持的泛型编程</em></li>
+</ul>
+<ol start="2">
+<li>C++的发展历史<br>
+首先，C++由C语言发展而来。兼具低级语言的效率和高级语言的通用性可移植性。<br>
+为了应对大型程序编写时C编程遇到的困难，设计了面向对象编程原理（object oriented programming)，将数据和方法以类的形式定义，有利于创建可以重用的代码。<br>
+另外，C++还提供了另一种风格去编写程序，那就是泛型编程。它与OOP目标相同，就是使得抽象的数据更加简单。不过泛型编程更加侧重于特定的数据类型，提供常见任务（如排序）等的特殊工具。</li>
+<li>可移植性和标准</li>
+<li>程序设计的技巧</li>
+</ol>
+<ul>
+<li><em>编写程序</em></li>
+<li><em>编译源代码</em></li>
+</ul>
+<p>我们打一个hello world</p>
+<pre><code class="prism language-cpp"><span class="token macro property">#<span class="token directive keyword">include</span><span class="token string">&lt;iostream&gt;</span></span>
+<span class="token keyword">using</span> <span class="token keyword">namespace</span> std<span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+   cout<span class="token operator">&lt;&lt;</span><span class="token string">"hello world"</span><span class="token operator">&lt;&lt;</span>endl<span class="token punctuation">;</span>
+   <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h1><a id="C_24"></a>第二章.开始学习C++</h1>
+<ol>
+<li>C++的编程格式<br>
+  C语言使用scanf-printf等一些函数来实现输入输出。而在C++中，我们通常使用cin,cout实现输出。当然，C语言里面的printf,scanf同样是可以用的（只要用了对应的库）。一个一般的C++程序里应该包括如下内容：</li>
+</ol>
+<ul>
+<li>注释，用//</li>
+<li>预处理编译指令#include</li>
+<li>函数头（返回类型，名称，参数列表）</li>
+<li>编译指令using namespace</li>
+<li>函数主体内容</li>
+<li>返回，return 语句</li>
+</ul>
+<p>C++代码中有且仅有一个main函数，而且不能被其他函数调用。<br>
+  iostream和头文件同样很重要。与C语言类似，头文件里面包括一些基本的函数供我们调用，而iostream（输入输出流）控制的是输入输出等最基本最核心的语句，所以不可没有。当然，C++也是可以用C头文件的。不过不像C的stdio.h，C++头文件很多不以后缀.h命名。有些是直接用C文件，有些自己弄，还有些就干脆把.h换成c***来使用，比如就把math.h变成cmath（这个头文件里面放的全是数学函数）。另外，编译指令using在C++中必不可少，有助于组织程序（还可以把多个厂商现有的代码组合起来虽然我不会）。按照这种方式，类，函数，变量是C++编译器的标准组件，它们都被放在了名称空间std中<br>
+2. cout和cin的用法</p>
+<pre><code class="prism language-cpp">cin<span class="token operator">&gt;&gt;</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token punctuation">;</span>
+cout<span class="token operator">&lt;&lt;</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">&lt;&lt;</span>endl<span class="token punctuation">;</span>
+</code></pre>
+<ol start="3">
+<li>声明变量和赋值，cout的拼接操作</li>
+<li>cout竟然是一个类的对象<br>
+  cout是类ostream中的一个对象。istream和ostream输入输出类都来自iostream中定义的类库。我们并未编写它，但是我们可以用它。</li>
+<li>函数的编写与调用<br>
+  调用函数的基本格式像这个样子：</li>
+</ol>
+<pre><code class="prism language-cpp">x<span class="token operator">=</span><span class="token function">sqrt</span><span class="token punctuation">(</span><span class="token number">6.25</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>x是赋值对象，存放函数的返回值。sqrt是函数名称，6.25是函数的参数，是个浮点数。最后每一条语句都别忘记了加上分号。哦对了，可能有些函数没有返回值，这也很正常。那么，就请不要赋值了，直接用函数体里面执行的过程就可以咯。<br>
+  光靠头文件里面提供的一些函数绝对是不够用的，实际开发中我们会经常性的编写自己的函数（毕竟头文件里面的函数也是人编出来的嘛）。当我们自定义函数的时候，我们是先声明再编写。也就是说如果不急着在程序开始写函数内容，我们通常会先放一个函数的signature上面，到了后面我们再进行编写。一个函数的signature包括返回值，名称与参数列表。编写函数就像这个样子：</p>
+<pre><code class="prism language-cpp"><span class="token macro property">#<span class="token directive keyword">include</span><span class="token string">&lt;iostream&gt;</span></span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token keyword">using</span> <span class="token keyword">namespace</span> std<span class="token punctuation">;</span>
+<span class="token keyword">double</span> <span class="token function">sqrt</span><span class="token punctuation">(</span><span class="token keyword">double</span> a<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//signature</span>
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token comment">//内容</span>
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">//编写函数</span>
+<span class="token keyword">double</span> <span class="token function">sqrt</span><span class="token punctuation">(</span><span class="token keyword">double</span> a<span class="token punctuation">)</span><span class="token punctuation">{</span>
+   <span class="token keyword">double</span> y<span class="token punctuation">;</span>
+   <span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token comment">//函数内容</span>
+   <span class="token keyword">return</span> y<span class="token punctuation">;</span><span class="token comment">//返回</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h1><a id="_72"></a>第三章.简单数据类型</h1>
+<p>整型：int, short, long, long long, unsigned<br>
+浮点：float, double<br>
+字符char, 复数complex等基本数据<br>
+位运算：按位与或非异或移位<br>
+逻辑运算：==，&gt;, &lt;等<br>
+算数运算：加减乘除平方求模等，自加自减a++, ++a<br>
+这个部分C里面讲得比较多，要不我就跳过去了吧。</p>
+</div>
+</body>
+
+</html>
