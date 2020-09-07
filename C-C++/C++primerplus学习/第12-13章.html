@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第13-14章</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+<body background="8.jpg" style=" background-repeat:no-repeat ;background-size:100% 100%;background-attachment: fixed;">
+  <div style="background-color：rgba(255,255,255,0.2);"></div>
+  <div class="stackedit__html"><h1><a id="_0"></a>类与动态内存分配</h1>
+<p><a href="https://blog.csdn.net/ezra1991/article/details/81030021?biz_id=102&amp;utm_term=%E7%B1%BB%E4%B8%8E%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-0-81030021&amp;spm=1018.2118.3001.4187">类与动态内存分配</a></p>
+<h1><a id="_2"></a>类继承</h1>
+<h2><a id="_3"></a>基类与派生类</h2>
+<p>派生类可以说是基类的一个衍生类，具有原本的基类的所有性质（既继承了基类的实现，也继承了基类的接口），也可以对基类进行补充和覆盖。不过派生类需要自己构造函数，可以跟你讲需要添加额外的数据成员和成员函数。<br>
+派生类不能直接访问基类的私有成员，还是要靠基类的方法。具体来说，派生类构造函数必须用基类<br>
+创建派生类对象时程序先创建基类对象。<br>
+有关于派生类构造函数的要点如下：</p>
+<ul>
+<li>首先创建基类对象</li>
+<li>派生类构造函数应通过成员初始化列表将积累信息传递给基类构造函数</li>
+<li>派生类构造函数应初始化派生类新增的数据成员<br>
+派生类对象可以使用基类的方法，只要不是私有的<br>
+基类指针可以在不进行显示类型转换的情况下指向派生类对象<br>
+基类引用可以在不进行显式类型转换的情况下引用派生类对象</li>
+</ul>
+<h2><a id="_16"></a>继承</h2>
+<p><a href="https://blog.csdn.net/studyhardi/article/details/90744785?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522159948215519725250330386%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&amp;request_id=159948215519725250330386&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v3~pc_rank_v2-6-90744785.first_rank_ecpm_v3_pc_rank_v2&amp;utm_term=%E7%BB%A7%E6%89%BF&amp;spm=1018.2118.3001.4187">C++继承</a><br>
+<a href="https://blog.csdn.net/haoel/article/details/1948051">虚函数</a></p>
+<pre><code class="prism language-cpp">例子：
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;iostream&gt;</span></span>
+<span class="token keyword">using</span>  <span class="token keyword">namespace</span> std<span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Parent</span>
+<span class="token punctuation">{</span>    
+ <span class="token keyword">public</span><span class="token operator">:</span>
+     
+     <span class="token keyword">char</span> data<span class="token punctuation">[</span><span class="token number">20</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+     <span class="token keyword">void</span> <span class="token function">Function1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    
+     <span class="token keyword">virtual</span> <span class="token keyword">void</span> <span class="token function">Function2</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   <span class="token comment">// 这里声明Function2是虚函数</span>
+     
+ <span class="token punctuation">}</span>parent<span class="token punctuation">;</span>
+ 
+ <span class="token keyword">void</span> Parent<span class="token operator">::</span><span class="token function">Function1</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+ <span class="token punctuation">{</span>
+     <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"This is parent,function1\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ <span class="token punctuation">}</span>
+ 
+ <span class="token keyword">void</span> Parent<span class="token operator">::</span><span class="token function">Function2</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+ <span class="token punctuation">{</span>
+     <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"This is parent,function2\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ <span class="token punctuation">}</span>
+ 
+ <span class="token keyword">class</span> <span class="token class-name">Child</span><span class="token operator">:</span><span class="token keyword">public</span> Parent
+ <span class="token punctuation">{</span>
+     <span class="token keyword">void</span> <span class="token function">Function1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token keyword">void</span> <span class="token function">Function2</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+     
+ <span class="token punctuation">}</span> child<span class="token punctuation">;</span>
+ 
+ <span class="token keyword">void</span> Child<span class="token operator">::</span><span class="token function">Function1</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+ <span class="token punctuation">{</span>
+     <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"This is child,function1\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ <span class="token punctuation">}</span>
+ 
+ <span class="token keyword">void</span> Child<span class="token operator">::</span><span class="token function">Function2</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+ 
+ <span class="token punctuation">{</span>
+     <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"This is child,function2\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ <span class="token punctuation">}</span>
+ 
+ <span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span> <span class="token keyword">char</span><span class="token operator">*</span> argv<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+ <span class="token punctuation">{</span>
+     Parent <span class="token operator">*</span>p<span class="token punctuation">;</span>  　　　　　<span class="token comment">// 定义一个基类指针</span>
+     <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">_getch</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">==</span><span class="token string">'c'</span><span class="token punctuation">)</span>    <span class="token comment">// 如果输入一个小写字母c    </span>
+         p<span class="token operator">=</span><span class="token operator">&amp;</span>child<span class="token punctuation">;</span>        <span class="token comment">// 指向继承类对象</span>
+     <span class="token keyword">else</span>    
+         p<span class="token operator">=</span><span class="token operator">&amp;</span>parent<span class="token punctuation">;</span>       <span class="token comment">// 否则指向基类对象</span>
+     p<span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">Function1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  　　 <span class="token comment">// 这里在编译时会直接给出Parent::Function1()的入口地址。    </span>
+     p<span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">Function2</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   　　<span class="token comment">// 注意这里，执行的是哪一个Function2？</span>
+     <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    
+ <span class="token punctuation">}</span>
+</code></pre>
+<h2><a id="_77"></a>联编</h2>
+<p>将源代码中的函数调用解码为执行特定的函数代码块被称为函数名联编。编译过程中的联编叫静态联编，运行过程中的联编叫动态联编。</p>
+<ol>
+<li>指针与引用类型的兼容性</li>
+<li>虚成员函数和动态联编
+<ul>
+<li>为什么有两种类型的联编，且默认为静态联编</li>
+<li>虚函数的工作原理
+<ul>
+<li>每个对象都将增大，增量为存储地址的空间</li>
+<li>对于每个类编译器都创建一个虚函数地址表</li>
+<li>对于每个函数调用，都需要到表里面查地址</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>虚函数的一些要点：
+<ul>
+<li>在基类方法声明中使用virtual可使得该方法在基类以及所有的派生类中是虚的</li>
+<li>如果使用指向对象的引用或指针调用虚方法，程序将使用为对象类型定义的方法而非为引用或指针类型定义的方法。这是动态联编。这样一来基类指针可以指向派生类对象</li>
+<li>如果定义的类被用作基类，则应该将那些要做派生类中重新定义的类方法声明为虚的</li>
+</ul>
+</li>
+<li>注意：
+<ul>
+<li>构造函数</li>
+<li>析构函数</li>
+<li>友元</li>
+<li>隐藏方法</li>
+</ul>
+</li>
+</ol>
+<h2><a id="protected_96"></a>protected</h2>
+<p>protected与private类似。类外只能用公有类成员来访问protected部分的类成员。private和protected之间的区别只有在基类派生的类中才会表现出来。派生类的成员可以直接访问积累的保护成员，但是不能直接访问积累的私有成员。因此，对于外部世界来说，保护成员的行为与私有差不多；但对于派生类，保护成员的行为与共有成员相似。</p>
+<h2><a id="_98"></a>抽象基类</h2>
+<p>为什么C++要定义抽象基类？</p>
+<p>C++为什么要定义抽象基类？</p>
+<p>抽象类就是类里定义了纯虚成员函数的类。纯虚函数只提供了接口，并没有具体实现。抽象类不能被实例化，通常是作为基类供子类继承，子类中重写虚函数，实现具体的接口。</p>
+<p>为什么要定义抽象基类呢?依我所见主要有以下原因：</p>
+<ol>
+<li>
+<p>最重要的原因是，可以将接口与实现分离。接口是软件产品最有价值的资源，设计接口比实现接口需要耗费更昂贵的成本。因此，要将接口保护起来，以免在针对客户需求修改实现的时候，程序员不小心把接口破坏掉。</p>
+</li>
+<li>
+<p>引入抽象基类和纯虚函数方便实现C++的多态特性。可以用抽象基类的指针去调用子类对象的方法。</p>
+</li>
+<li>
+<p>很多时候，许多基类被实例化是不合理的。例如“形状”这个基类，被实例化之后反而会让人相当费解，所以干脆将“形状”这个类定义为抽象类，由它派生出正方形，三角形等子类。</p>
+</li>
+</ol>
+<p>c++通过使用纯虚函数（pure virtual function）提供未实现的函数。纯虚函数声明的结尾处为=0，参见Area（）方法：<br>
+class BaseEllipse                    //abstract base class<br>
+{<br>
+private:<br>
+double   x;                   //x-coordinate of the ellipse’s center<br>
+double   y;                   //y-coordinate of the ellipse’s center<br>
+…<br>
+public:<br>
+BaseEllipse(double x0 = 0，double y0 = 0): x(x0), y(y0) {}<br>
+virtual   ~BaseEllipse() {}<br>
+void    Move(int nx, int ny){x = nx; y = ny;}<br>
+virtual   double Area() const =0;    //a pure virual function<br>
+…<br>
+}<br>
+当类声明中包含纯虚函数时，则不能创建该类的对象。这里的理念是，包含纯虚函数的类只用作基类。原型中的=0使虚函数成为纯虚函数。这里的方法Area（）没有定义，但c++甚至允许纯虚函数有定义。例如，也许所有的基类方法都与Move（）一样，可以在基类中进行定义，但你仍需要将这个类声明为抽象的。在这种情况下，可以将原型声明为虚拟的：<br>
+virtual void Move(int nx, int ny) = 0;<br>
+这将使基类成为抽象的，但你仍可以在实现文件中提供方法的定义：<br>
+void BaseEllipse::Move(int nx, int ny) {x = nx; y = ny;}<br>
+总之在原型中使用=0指出类是一个抽象基类，在类中可以不定义该函数。<br>
+总结：抽象类只能作为基类来使用，其纯虚函数的实现由派生类给出。如果派生类没有重新定义纯虚函数，而派生类只是继承基类的纯虚函数，则这个派生类仍然还是一个抽象类。如果派生类中给出了基类纯虚函数的实现，则该派生类就不再是抽象类了，它是一个可以建立对象的具体类了。</p>
+<p><em><mark>另外我套用别人说的话哈</mark></em></p>
+<p>有时候我们需要表示一种抽象的概念，但是具体的实现方式可以有很多种，这个时候我们可以使用纯虚函数定义这种抽象概念，含有或未经覆盖直接继承纯虚函数的类时抽象基类。抽象基类负责定义接口，我们不能直接创建一个抽象基类的对象，但是可以创建派生类的对象，前提是这些类覆盖了纯虚函数。</p>
+<p>通过在虚函数声明处分号之前添加=0将虚函数定义为纯虚函数，纯虚函数可以有定义，但是函数体必须定义在类的外部。<br>
+例如</p>
+<pre><code class="prism language-cpp"><span class="token keyword">class</span> <span class="token class-name">Person</span>
+<span class="token punctuation">{</span>
+<span class="token keyword">public</span><span class="token operator">:</span>
+	<span class="token keyword">virtual</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">void</span> Person<span class="token operator">::</span><span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+	std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"person run..."</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Worker</span> <span class="token operator">:</span><span class="token keyword">public</span> Person
+<span class="token punctuation">{</span>
+<span class="token keyword">public</span><span class="token operator">:</span>
+	<span class="token keyword">virtual</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> override
+	<span class="token punctuation">{</span>
+		Person<span class="token operator">::</span><span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"worker run..."</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+	Person<span class="token operator">*</span> person <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token function">Worker</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	person<span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">system</span><span class="token punctuation">(</span><span class="token string">"pause"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+</br>
+  </br>
+  <h1>目录</h1>
+<ul type="circle">                     
+    <li><a href="https://jokerzaia.github.io/C-C++/C++primerplus学习/第1-3章">第1-3章</a></li>
+    <li><a href="https://jokerzaia.github.io/C-C++/C++primerplus学习/第4-6章">第4-6章</a></li>
+    <li><a href="https://jokerzaia.github.io/C-C++/C++primerplus学习/第7-8章">第7-8章</a></li>
+    <li><a href="https://jokerzaia.github.io/C-C++/C++primerplus学习/第9章">第9章</a></li>
+    <li><a href="https://jokerzaia.github.io/C-C++/C++primerplus学习/第10-11章">第10-11章</a></li>
+    <li><a href="https://jokerzaia.github.io/C-C++/C++primerplus学习/第12-13章">第12-13章</a></li>
+    <li><a href="https://jokerzaia.github.io/C-C++/C++primerplus学习/第14-15章">第14-15章</a></li>
+    <li><a href="https://jokerzaia.github.io/C-C++/C++primerplus学习/第16-18章">第16-18章</a></li>
+</ul>
+</div>
+</body>
+</body>
+</html>
