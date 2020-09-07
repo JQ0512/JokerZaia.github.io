@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第7-8章</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+<body background="8.jpg" style=" background-repeat:no-repeat ;background-size:100% 100%;background-attachment: fixed;">
+  <div class="stackedit__html"><h1><a id="_C_0"></a>第七章. 函数——C++的编程模块</h1>
+<h2><a id="71__1"></a>7.1 函数的构成</h2>
+<p>函数的构成由三个部分：函数的原型，函数的签名，函数的内容。<br>
+例如我们可以看到下面这个例子</p>
+<pre><code class="prism language-cpp"><span class="token macro property">#<span class="token directive keyword">include</span><span class="token string">&lt;iostream&gt;</span></span>
+<span class="token keyword">using</span> <span class="token keyword">namespace</span> std<span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">my_print</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// give a prototype</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+   <span class="token function">my_print</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//use a function</span>
+   cout<span class="token operator">&lt;&lt;</span><span class="token string">"thank you"</span><span class="token operator">&lt;&lt;</span>endl<span class="token punctuation">;</span>
+   <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">void</span> <span class="token function">my_print</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span> <span class="token comment">//signature</span>
+   cout<span class="token operator">&lt;&lt;</span><span class="token string">"you are handsome"</span><span class="token operator">&lt;&lt;</span>endl<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>函数的原型描述了函数到编译器的接口，他将函数返回值，参数列表啥子的都传递过去，声明原型的时候就套一个函数头加上分号，因为这是个语句。<br>
+原型确保以下几点：</p>
+<ul>
+<li>编译器正确处理函数返回值</li>
+<li>编译器检查使用的参数数目是否正确</li>
+<li>编译器检查使用的参数类型是否正确</li>
+</ul>
+<h2><a id="2_26"></a>2.函数参数</h2>
+<p>这里我们主要是理解两个概念，一个叫做形参（parameter)另一个叫做实参（argument)。形式参数是我们在声明函数的时候自己定义的参数，可以把它视作一个变量吧。而实参是在这个函数被调用的时候放进去的参数值等于多少。<br>
+譬如我们定义函数的时候void my_print(int a); 这里的a就是一个形参。而在调用的时候，可以分成两种情况，第一种是在调用之前已经声明变量并进行赋值int x=4; my_print(x);另一种是直接填数字进去，例如：my_print(4);。</p>
+<h2><a id="3_29"></a>3.函数与数组</h2>
+<p>C++和C一样都会将数组名视作一个指针，不过你要是使用数组的方式在函数体里面搞事情也是可以的。譬如arr[i]=*(arr+i)。函数参数中如果出现了数组，它并不会把数组的内容传递给函数，但是会传递数组第一个元素的地址</p>
+<pre><code class="prism language-cpp"><span class="token macro property">#<span class="token directive keyword">include</span><span class="token string">&lt;iostream&gt;</span></span>
+<span class="token keyword">using</span> <span class="token keyword">namespace</span> std<span class="token punctuation">;</span>
+<span class="token keyword">const</span> <span class="token keyword">int</span> ArSize<span class="token operator">=</span><span class="token number">8</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">sum_arr</span><span class="token punctuation">(</span><span class="token keyword">int</span> arr<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token keyword">int</span> n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+   <span class="token keyword">int</span> cookies<span class="token punctuation">[</span>ArSize<span class="token punctuation">]</span><span class="token operator">=</span><span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">8</span><span class="token punctuation">,</span><span class="token number">16</span><span class="token punctuation">,</span><span class="token number">32</span><span class="token punctuation">,</span><span class="token number">64</span><span class="token punctuation">,</span><span class="token number">128</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+   cout<span class="token operator">&lt;&lt;</span>cookies<span class="token operator">&lt;&lt;</span><span class="token string">"=array address"</span><span class="token punctuation">;</span>
+   cout<span class="token operator">&lt;&lt;</span><span class="token keyword">sizeof</span><span class="token punctuation">(</span>cookies<span class="token punctuation">)</span><span class="token operator">&lt;&lt;</span><span class="token string">"sizeof cookies"</span><span class="token punctuation">;</span>
+   <span class="token keyword">int</span> sum<span class="token operator">=</span><span class="token function">sum_arr</span><span class="token punctuation">(</span>cookies<span class="token punctuation">,</span>ArSize<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   cout<span class="token operator">&lt;&lt;</span><span class="token string">"total"</span><span class="token operator">&lt;&lt;</span>sum<span class="token operator">&lt;&lt;</span>endl<span class="token punctuation">;</span>
+   <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">int</span> <span class="token function">sum_arr</span><span class="token punctuation">(</span><span class="token keyword">int</span> arr<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">int</span> n<span class="token punctuation">)</span><span class="token punctuation">{</span>
+   <span class="token keyword">int</span> total<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
+   cout<span class="token operator">&lt;&lt;</span>arr<span class="token operator">&lt;&lt;</span><span class="token string">"=arr"</span><span class="token punctuation">;</span>
+   cout<span class="token operator">&lt;&lt;</span><span class="token keyword">sizeof</span><span class="token punctuation">(</span>arr<span class="token punctuation">)</span><span class="token operator">&lt;&lt;</span><span class="token string">"sizeof arr"</span><span class="token punctuation">;</span>
+   <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>i<span class="token operator">&lt;</span>n<span class="token punctuation">;</span>i<span class="token operator">++</span><span class="token punctuation">)</span>
+      total<span class="token operator">+</span><span class="token operator">=</span>arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+   <span class="token keyword">return</span> total<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>函数可能，我是说可能啊，可能会无意中更改数组的内容。那么我们在声明形式参数的时候可以加一个const给它定死。<br>
+然后我们简要的提一下二维数组吧。a[r][s]可以看作一个二维数组，也可以当成一个矩阵。然后a[][j]可以构成一个一位数组。当然了，二维数组也可以是作为一个二重指针。</p>
+<pre><code class="prism language-cpp">arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token operator">=</span><span class="token operator">*</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">(</span>arr<span class="token operator">+</span>j<span class="token punctuation">)</span><span class="token operator">+</span>j<span class="token punctuation">)</span>
+</code></pre>
+<h2><a id="4_61"></a>4.函数与字符串</h2>
+<p>这一块跟C差不多，反正就是C风格字符串就像数组一样处理，string类的话就像个结构体一样处理就可以了。</p>
+<h2><a id="5_63"></a>5.函数与结构体</h2>
+<p>相较于数组，结构体可能更有整体性，一个结构创建的对象，不同的属性整合到一起，使得这个对象更加的具备整体性。而在结构体返回的时候要注意，返回的结构对象每个属性都需要进行处理与赋值。<br>
+下面这个例子是讲解如何把直角坐标化成极坐标的例子。</p>
+<pre><code class="prism language-cpp"><span class="token macro property">#<span class="token directive keyword">include</span><span class="token string">&lt;iostream&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span><span class="token string">&lt;cmath&gt;</span></span>
+<span class="token keyword">using</span> <span class="token keyword">namespace</span> std<span class="token punctuation">;</span>
+<span class="token keyword">struct</span> polar<span class="token punctuation">{</span>
+  <span class="token keyword">double</span> distance<span class="token punctuation">;</span>
+  <span class="token keyword">double</span> angle<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">struct</span> rect<span class="token punctuation">{</span>
+  <span class="token keyword">double</span> x<span class="token punctuation">;</span>
+  <span class="token keyword">double</span> y<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+polar <span class="token function">rect_to_polar</span><span class="token punctuation">(</span>rect xypos<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">show_polar</span><span class="token punctuation">(</span>polar dapos<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+   rect rplace<span class="token punctuation">;</span>
+   polar pplace<span class="token punctuation">;</span>
+   cout<span class="token operator">&lt;&lt;</span><span class="token string">"enter the x and y values:"</span><span class="token operator">&lt;&lt;</span>endl<span class="token punctuation">;</span>
+   <span class="token keyword">while</span><span class="token punctuation">(</span>cin<span class="token operator">&gt;&gt;</span>rplace<span class="token punctuation">.</span>x<span class="token operator">&gt;&gt;</span>rplace<span class="token punctuation">.</span>y<span class="token punctuation">)</span><span class="token punctuation">{</span>
+     pplace<span class="token operator">=</span><span class="token function">rect_to_polar</span><span class="token punctuation">(</span>rplace<span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token function">show_polar</span><span class="token punctuation">(</span>pplace<span class="token punctuation">)</span><span class="token punctuation">;</span>
+     cout<span class="token operator">&lt;&lt;</span><span class="token string">"next two numbers"</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+   cout<span class="token operator">&lt;&lt;</span><span class="token string">"done"</span><span class="token operator">&lt;&lt;</span>endl<span class="token punctuation">;</span>
+   <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+polar <span class="token function">rect_to_polar</span><span class="token punctuation">(</span>rect xypos<span class="token punctuation">)</span><span class="token punctuation">{</span>
+   polar answer<span class="token punctuation">;</span>
+   answer<span class="token punctuation">.</span>distance <span class="token operator">=</span><span class="token function">sqrt</span><span class="token punctuation">(</span>xypos<span class="token punctuation">.</span>x<span class="token operator">*</span>xypos<span class="token punctuation">.</span>x<span class="token operator">+</span>xypos<span class="token punctuation">.</span>y<span class="token operator">*</span>xypos<span class="token punctuation">.</span>y<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   answer<span class="token punctuation">.</span>angle <span class="token operator">=</span><span class="token function">atan2</span><span class="token punctuation">(</span>xypos<span class="token punctuation">.</span>y<span class="token punctuation">,</span>xypos<span class="token punctuation">.</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token keyword">return</span> answer<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">void</span> <span class="token function">show_polar</span><span class="token punctuation">(</span>polar dapos<span class="token punctuation">)</span><span class="token punctuation">{</span>
+   <span class="token keyword">const</span> <span class="token keyword">double</span> rad_to_deg<span class="token operator">=</span><span class="token number">57.296</span><span class="token punctuation">;</span>
+   cout<span class="token operator">&lt;&lt;</span><span class="token string">"distance:'"</span><span class="token operator">&lt;&lt;</span>dapos<span class="token punctuation">.</span>distance<span class="token punctuation">;</span>
+   cout<span class="token operator">&lt;&lt;</span><span class="token string">", angle:"</span><span class="token operator">&lt;&lt;</span>dapos<span class="token punctuation">.</span>angle<span class="token operator">*</span>rad_to_deg<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>如果你想像数组指针一样使用地址传递，那么，你就用一个指向结构的指针。修改这样几处：</p>
+<ul>
+<li>调用函数时将结构的地址传递给它</li>
+<li>将形参声明为指向ppolar的指针，并且const修饰防止无意间更改。const * polar</li>
+<li>利用指针的时候记得不要用.来访问属性，用-&gt;来访问。</li>
+</ul>
+<h2><a id="6_113"></a>6.函数指针与指针函数</h2>
+<p>1）函数指针</p>
+<p>一种特殊的指针，它指向函数的入口；<br>
+要声明指向特定类型的函数指针，可以首先编写这个函数的原型，然后用(*p)来替换函数名，这样p就是这类函数的指针。</p>
+<pre><code class="prism language-cpp"><span class="token comment">/* 
+ * 求最大值 
+ * 返回值是int类型，返回两个整数中较大的一个 
+ */</span>  
+<span class="token keyword">int</span> <span class="token function">max</span><span class="token punctuation">(</span><span class="token keyword">int</span> a<span class="token punctuation">,</span> <span class="token keyword">int</span> b<span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+    <span class="token keyword">return</span> a <span class="token operator">&gt;</span> b <span class="token operator">?</span> a <span class="token operator">:</span> b<span class="token punctuation">;</span>  
+<span class="token punctuation">}</span>  
+  
+<span class="token comment">/* 
+ * 求最小值 
+ * 返回值是int类型，返回两个整数中较小的一个 
+ */</span>  
+<span class="token keyword">int</span> <span class="token function">min</span><span class="token punctuation">(</span><span class="token keyword">int</span> a<span class="token punctuation">,</span> <span class="token keyword">int</span> b<span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+    <span class="token keyword">return</span> a <span class="token operator">&lt;</span> b <span class="token operator">?</span> a <span class="token operator">:</span> b<span class="token punctuation">;</span>  
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+	f <span class="token operator">=</span> max<span class="token punctuation">;</span> <span class="token comment">// 函数指针f指向求最大值的函数max  </span>
+    <span class="token keyword">int</span> c <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token operator">*</span>f<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+	f <span class="token operator">=</span> min<span class="token punctuation">;</span> <span class="token comment">// 函数指针f指向求最小值的函数min  </span>
+    c <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token operator">*</span>f<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+<span class="token punctuation">}</span>
+
+</code></pre>
+<p>2）指针函数</p>
+<p>返回指针的函数，一个函数，它的返回值是指针；</p>
+<pre><code class="prism language-cpp"><span class="token comment">/* 
+ * 指针函数的定义 
+ * 返回值是指针类型int * 
+ */</span>  
+<span class="token keyword">int</span> <span class="token operator">*</span><span class="token function">f</span><span class="token punctuation">(</span><span class="token keyword">int</span> a<span class="token punctuation">,</span> <span class="token keyword">int</span> b<span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+    <span class="token keyword">int</span> <span class="token operator">*</span>p <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span> <span class="token operator">*</span><span class="token punctuation">)</span><span class="token function">malloc</span><span class="token punctuation">(</span><span class="token keyword">sizeof</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    <span class="token function">memset</span><span class="token punctuation">(</span>p<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    <span class="token operator">*</span>p <span class="token operator">=</span> a <span class="token operator">+</span> b<span class="token punctuation">;</span>    
+    <span class="token keyword">return</span> p<span class="token punctuation">;</span>  
+<span class="token punctuation">}</span> 
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+	<span class="token keyword">int</span> <span class="token operator">*</span>p1 <span class="token operator">=</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>  
+    p1 <span class="token operator">=</span> <span class="token function">f</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token punctuation">}</span>
+
+</code></pre>
+<h2><a id="7_169"></a>7.递归</h2>
+<p>这个问题我们提的比较多了，这一部分就略过去了哈<br>
+可以靠斐波那契数列和梵天塔来回忆一下这个部分呢</p>
+<h1><a id="__173"></a>第八章. 函数探幽</h1>
+<h2><a id="1__174"></a>1. 内联</h2>
+<p>定义方式：函数名前面加上inline，就可以以文本替换而非调用的方式执行，是C语言的宏定义#define的强化版本。由于宏定义不能按照值来传递，所以呢就设计了内联。</p>
+<h2><a id="2__176"></a>2. 引用</h2>
+<p>引用：<a href="https://blog.csdn.net/penghejuan2012/article/details/82457603?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522159944985719725222429600%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&amp;request_id=159944985719725222429600&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_click~default-2-82457603.first_rank_ecpm_v3_pc_rank_v2&amp;utm_term=C%2b%2b%E5%BC%95%E7%94%A8&amp;spm=1018.2118.3001.4187">引用总结</a><br>
+默认参数：就是给的参数要是少了，可以自己设定一个默认值顶上。如果实参与默认值不匹配，就用实参覆盖她。比如说void stand(int *arr, int n=1);,调用的时候stand(a[],3)是可以的，此时n=1被覆盖，变成了3。那如果stand(a[])会不会报错呢，是不会的。因为已经默认n=1了，传进去的时候你不说，但程序自己可以去做。</p>
+<h2><a id="3__179"></a>3. 重载</h2>
+<p>重载是在C的基础上增加的功能。它允许存在多个同名函数，只是signature并不完全一致（返回值类型可能不同，然后参数列表）例如我们定义几个不同的同名函数如下：</p>
+<pre><code class="prism language-cpp"><span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>str<span class="token punctuation">,</span> <span class="token keyword">int</span> width<span class="token punctuation">)</span>
+<span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token keyword">double</span> d<span class="token punctuation">,</span> <span class="token keyword">int</span> width<span class="token punctuation">)</span>
+<span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token punctuation">,</span> <span class="token keyword">int</span> width<span class="token punctuation">)</span>
+</code></pre>
+<p>然而在使用重载的时候要注意，有些看起来不同的东西实质上会让编译器不知所以。因为编译器处理重载函数的时候看的是参数列表和返回值类型。若返回值类型也相同（这种情况还挺多的）就得看参数列表。比如调用print(1,4)就知道是在调用第三个，而print(“the”,3)就是第一个了。<br>
+另外，看这个例子嗷：</p>
+<pre><code class="prism language-cpp"><span class="token keyword">double</span> <span class="token function">cube</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">)</span>
+<span class="token keyword">double</span> <span class="token function">cube</span><span class="token punctuation">(</span><span class="token keyword">int</span> <span class="token operator">&amp;</span>x<span class="token punctuation">)</span>
+</code></pre>
+<p>这俩可能看起来不太一样，但是在使用的时候，你到底是要直接用x还是用x的地址呢，鬼知道你是怎么想的。所以编译器就会乱掉。</p>
+<h2><a id="4__196"></a>4. 模板</h2>
+<p>模板这个东西是利用泛型来定义函数的，其中的泛型可以用具体类型int, double替换<br>
+创建模板：</p>
+<pre><code class="prism language-cpp"><span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token class-name">anytype</span><span class="token operator">&gt;</span>
+<span class="token keyword">void</span> <span class="token function">swap</span><span class="token punctuation">(</span>anytype <span class="token operator">&amp;</span>a<span class="token punctuation">,</span> anytype <span class="token operator">&amp;</span>b<span class="token punctuation">)</span><span class="token punctuation">{</span>
+  anytype temp<span class="token punctuation">;</span>
+  temp<span class="token operator">=</span>a<span class="token punctuation">;</span>
+  a<span class="token operator">=</span>b<span class="token punctuation">;</span>
+  b<span class="token operator">=</span>temp<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>重载模板：可以像函数重载一样对模板进行“重载”定义。但是，与函数重载类似，模板的特征标要有所不同。比如说：</p>
+<pre><code class="prism language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> T<span class="token operator">&gt;</span>
+<span class="token keyword">void</span> <span class="token function">swap</span><span class="token punctuation">(</span>T <span class="token operator">&amp;</span>a<span class="token punctuation">,</span> T <span class="token operator">&amp;</span>b<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//original</span>
+
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> T<span class="token operator">&gt;</span>
+<span class="token keyword">void</span> <span class="token function">swap</span><span class="token punctuation">(</span>T <span class="token operator">*</span>a<span class="token punctuation">,</span> T <span class="token operator">*</span>b<span class="token punctuation">,</span> <span class="token keyword">int</span> n<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//new</span>
+</code></pre>
+<p>局限性：并不是啥都能处理的<br>
+显式具体化：当编译器找到与函数调用匹配的定义时，先调用具体函数而非找模板去套。现行标准对于具体化是这样定义的：</p>
+<ul>
+<li>对于给定的函数名称，可以有非模板函数，模板函数和显示具体化模板以及它们的重载版本</li>
+<li>显式具体化的原型和定义以template&lt;&gt;打头，通过名称指出类型</li>
+<li>具体化模板优先于常规模板，非模板函数优先于具体化和常规模板</li>
+</ul>
+<p>可以看到这样一个实例：</p>
+<pre><code class="prism language-cpp"><span class="token keyword">struct</span> job<span class="token punctuation">{</span>
+  <span class="token comment">//something</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token class-name">T</span><span class="token operator">&gt;</span> <span class="token comment">//define a template</span>
+<span class="token keyword">void</span> <span class="token function">swap</span><span class="token punctuation">(</span>T <span class="token operator">&amp;</span><span class="token punctuation">,</span> T <span class="token operator">&amp;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">//explict specialization for the job type</span>
+<span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token operator">&gt;</span><span class="token keyword">void</span> Swap<span class="token operator">&lt;</span>job<span class="token operator">&gt;</span><span class="token punctuation">(</span>job <span class="token operator">&amp;</span><span class="token punctuation">,</span> job <span class="token operator">&amp;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+   <span class="token keyword">double</span> u<span class="token punctuation">,</span>v<span class="token punctuation">;</span>
+   <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+   <span class="token function">swap</span><span class="token punctuation">(</span>u<span class="token punctuation">,</span>v<span class="token punctuation">)</span><span class="token comment">//use template</span>
+   job a<span class="token punctuation">,</span>b<span class="token punctuation">;</span>
+   <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+   <span class="token function">swap</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span>b<span class="token punctuation">)</span><span class="token comment">//use specialization</span>
+   <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>实例化和具体化<br>
+实例化不同于具体化，实例化是指调用swap(i,j)使得编译器生成了swap的一个实例。模板并非函数定义，但在使用过程中知道int的实例由函数定义。这种方式被称为隐式实例化。现在也支持显式实例化，就是指名道姓说出类型，并在前面加上一个template。像这样：template void swap &lt; int &gt;(int, int);</p>
+</div>
+</body>
+</body>
+</html>
