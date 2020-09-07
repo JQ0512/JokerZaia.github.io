@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title></title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+<body background="8.jpg" style=" background-repeat:no-repeat ;background-size:100% 100%;background-attachment: fixed;">
+  <div style="background-color：rgba(255,255,255,0.2);"></div>
+  <div class="stackedit__html"><h1><a id="1011__0"></a>第10-11章. 初探对象</h1>
+<h2><a id="1__1"></a>1. 面向对象与面向过程</h2>
+<ul>
+<li>过程性编写：<em>首先考虑要遵循的步骤，然后考虑如何表示这些数据。并不需要程序一直运行，用户可能希望能够将数据存储到一个文件中，然后从文件中读取数据</em></li>
+<li>面向对象编程：<em>首先从用户的角度考虑对象——描述对象所需的数据以及描述用户与数据交互所需的操作。完成对接口的描述后，需要确定如何实现接口和数据存储。最后使用新的设计方案创建程序</em></li>
+</ul>
+<h2><a id="2__6"></a>2. 类与对象</h2>
+<ol>
+<li>类的构成：<br>
+指定基本的类型完成了工作：</li>
+</ol>
+<ul>
+<li>决定数据对象需要的内存容量</li>
+<li>决定如何解释内存中的位</li>
+<li>决定可使用数据对象执行的操作方法<br>
+类的规范有两个部分：一个是类的声明，声明数据成员和方法函数；另一个是对方法函数内容的定义</li>
+</ul>
+<ol start="2">
+<li>什么是接口？<br>
+接口是一个共享框架，在两个系统之间交互时使用。对于类，我们说公共接口。在这里，public是使用类的程序，交互系统由类对象组成。接口使程序员能够编写说类对象交互的代码从而让程序能够使用类对象。例如要计算string对象包含多少个字符，不需要解剖对象，只需调用哪个string类提供的方法。类设计禁止公共用户直接访问类，但公众可以使用方法size()，这就是一个公共接口。通常，方法getline()是istream类的公共接口的组成部分。使用cin的程序不是直接与对象内部交互读取，而是getline()。一个新的问题就是访问权限，在C++和java中有三个控制访问权限的关键词public, private和protected。我们着重看前面两个point。public，公有类，可以在类外访问，使用对象的时候可以根据属性进行数据与方法的访问。而private，私有类，只能在类定义里面用（可以当中间变量用）另外，如果用友元也可以访问和使用它。<br>
+1，成员函数方法 2，内联方法 3，方法使用于哪个对象</li>
+</ol>
+<p>================ 定义类 ================</p>
+<pre><code class="prism language-cpp"><span class="token comment">/*----------------stock00.h--------------*/</span>
+<span class="token comment">/*----------------stock class interface----------------*/</span>
+<span class="token macro property">#<span class="token directive keyword">ifndef</span> STOCK00_H_</span>
+<span class="token macro property">#<span class="token directive keyword">define</span> STOCK00_H_</span>
+<span class="token macro property">#<span class="token directive keyword">include</span><span class="token string">&lt;string&gt;</span></span>
+
+<span class="token keyword">class</span> <span class="token class-name">Stock</span><span class="token punctuation">{</span>
+   <span class="token keyword">private</span><span class="token operator">:</span> <span class="token comment">//private,can't be used outside the field</span>
+      std<span class="token operator">::</span>string company<span class="token punctuation">;</span>
+      <span class="token keyword">long</span> shares<span class="token punctuation">;</span>
+      <span class="token keyword">double</span> share_val<span class="token punctuation">;</span>
+      <span class="token keyword">double</span> total_val<span class="token punctuation">;</span>
+      <span class="token keyword">void</span> <span class="token function">set_tot</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+         total_val <span class="token operator">=</span> shares <span class="token operator">*</span> share_val<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+   <span class="token keyword">public</span><span class="token operator">:</span>
+      <span class="token keyword">void</span> <span class="token function">acquire</span><span class="token punctuation">(</span><span class="token keyword">const</span> std<span class="token operator">::</span>string <span class="token operator">&amp;</span> co<span class="token punctuation">,</span> <span class="token keyword">long</span> n<span class="token punctuation">,</span> <span class="token keyword">double</span> pr<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//just define</span>
+      <span class="token keyword">void</span> <span class="token function">buy</span><span class="token punctuation">(</span><span class="token keyword">long</span> num<span class="token punctuation">,</span> <span class="token keyword">double</span> price<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">void</span> <span class="token function">sell</span><span class="token punctuation">(</span><span class="token keyword">long</span> num<span class="token punctuation">,</span> <span class="token keyword">double</span> price<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">void</span> <span class="token function">update</span><span class="token punctuation">(</span><span class="token keyword">double</span> price<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">void</span> <span class="token function">show</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token macro property">#<span class="token directive keyword">endif</span></span>
+</code></pre>
+<p>================ 扩展类 ================</p>
+<pre><code class="prism language-cpp"><span class="token comment">/*--------stock00.cpp--------*/</span>
+<span class="token comment">//implementing the stock class</span>
+<span class="token macro property">#<span class="token directive keyword">include</span><span class="token string">&lt;iostream&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">"stock00.h"</span></span>
+
+<span class="token keyword">void</span> Stock<span class="token operator">::</span><span class="token function">acquire</span><span class="token punctuation">(</span><span class="token keyword">const</span> std<span class="token operator">::</span>string <span class="token operator">&amp;</span>co<span class="token punctuation">,</span><span class="token keyword">long</span> n<span class="token punctuation">,</span><span class="token keyword">double</span> pr<span class="token punctuation">)</span><span class="token punctuation">{</span>
+   company <span class="token operator">=</span>co<span class="token punctuation">;</span>
+   <span class="token keyword">if</span><span class="token punctuation">(</span>n<span class="token operator">&lt;</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+     std<span class="token operator">::</span>out<span class="token operator">&lt;&lt;</span><span class="token string">"number of shares can't be negative"</span><span class="token punctuation">;</span>
+     shares <span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
+     shares <span class="token operator">=</span> n<span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+   share_val<span class="token operator">=</span>pr<span class="token punctuation">;</span>
+   <span class="token function">set_tot</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">void</span> Stock<span class="token operator">::</span><span class="token function">buy</span><span class="token punctuation">(</span><span class="token keyword">long</span> num<span class="token punctuation">,</span> <span class="token keyword">double</span> price<span class="token punctuation">)</span><span class="token punctuation">{</span>
+   <span class="token keyword">if</span><span class="token punctuation">(</span>num<span class="token operator">&lt;</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+      std<span class="token operator">::</span>out<span class="token operator">&lt;&lt;</span><span class="token string">"number of shares purchased can't be negative"</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
+      shares <span class="token operator">+</span><span class="token operator">=</span> num<span class="token punctuation">;</span>
+      share_val <span class="token operator">=</span> price<span class="token punctuation">;</span>
+      <span class="token function">set_tot</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">void</span> Stock<span class="token operator">::</span><span class="token function">sell</span><span class="token punctuation">(</span><span class="token keyword">long</span> num<span class="token punctuation">,</span> <span class="token keyword">double</span> price<span class="token punctuation">)</span><span class="token punctuation">{</span>
+   <span class="token keyword">using</span> std<span class="token operator">::</span>cout<span class="token punctuation">;</span>
+   <span class="token keyword">if</span><span class="token punctuation">(</span>num<span class="token operator">&lt;</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+      cout<span class="token operator">&lt;&lt;</span><span class="token string">"number of shares sold can't be negative"</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span><span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span>num<span class="token operator">&gt;</span>shares<span class="token punctuation">)</span><span class="token punctuation">{</span>
+      cout<span class="token operator">&lt;&lt;</span><span class="token string">"no more to sell"</span><span class="token operator">&lt;&lt;</span>endl<span class="token punctuation">;</span>
+   <span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
+      shares<span class="token operator">-</span><span class="token operator">=</span>num<span class="token punctuation">;</span>
+      share_val<span class="token operator">=</span>price<span class="token punctuation">;</span>
+      <span class="token function">set_tot</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">void</span> Stock<span class="token operator">::</span><span class="token function">update</span><span class="token punctuation">(</span><span class="token keyword">double</span> price<span class="token punctuation">)</span><span class="token punctuation">{</span>
+   share_val <span class="token operator">=</span> price<span class="token punctuation">;</span>
+   <span class="token function">set_tot</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">void</span> Stock<span class="token operator">::</span><span class="token function">show</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+   std<span class="token operator">::</span>cout<span class="token operator">&lt;&lt;</span>company<span class="token operator">&lt;&lt;</span>shares<span class="token operator">&lt;&lt;</span>share_val<span class="token operator">&lt;&lt;</span>total_val<span class="token operator">&lt;&lt;</span>endl<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>================ 使用类 ================</p>
+<pre><code class="prism language-cpp"><span class="token macro property">#<span class="token directive keyword">include</span><span class="token string">&lt;iostream&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">"stock00.h"</span></span>
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+   Stock f<span class="token punctuation">;</span>
+   f<span class="token punctuation">.</span><span class="token function">acquire</span><span class="token punctuation">(</span><span class="token string">"nana"</span><span class="token punctuation">,</span><span class="token number">20</span><span class="token punctuation">,</span><span class="token number">12.5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   f<span class="token punctuation">.</span><span class="token function">show</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   f<span class="token punctuation">.</span><span class="token function">buy</span><span class="token punctuation">(</span><span class="token number">15</span><span class="token punctuation">,</span><span class="token number">18.6</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   f<span class="token punctuation">.</span><span class="token function">show</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   f<span class="token punctuation">.</span><span class="token function">sell</span><span class="token punctuation">(</span><span class="token number">40</span><span class="token punctuation">,</span><span class="token number">20.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   f<span class="token punctuation">.</span><span class="token function">show</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   f<span class="token punctuation">.</span><span class="token function">buy</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">12.3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   f<span class="token punctuation">.</span><span class="token function">show</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2><a id="3__116"></a>3. 构造函数和析构函数</h2>
+<p>由于部分数据不可访问，所以初始化对象并不像一个int那样容易。为了解决这个问题，我们设计构造函数和析构函数。<br>
+构造函数：为stock提供三个值/参数。那么原型可以这样设置<br>
+stock(const string &amp;co, long n=0,double pr=0.0);<br>
+下面提供一种可能定义方式：</p>
+<pre><code class="prism language-cpp">stock<span class="token operator">::</span><span class="token function">stock</span><span class="token punctuation">(</span><span class="token keyword">const</span> string <span class="token operator">&amp;</span>co<span class="token punctuation">,</span> <span class="token keyword">long</span> n<span class="token punctuation">,</span> <span class="token keyword">double</span> pr<span class="token punctuation">)</span><span class="token punctuation">{</span>
+    company<span class="token operator">=</span>co<span class="token punctuation">;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>n<span class="token operator">&lt;</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+       std<span class="token operator">::</span>cerr<span class="token operator">&lt;&lt;</span><span class="token string">"number of shares can't be negative"</span><span class="token punctuation">;</span>
+       shares<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token keyword">else</span> shares<span class="token operator">=</span>n<span class="token punctuation">;</span>
+    share_val<span class="token operator">=</span>pr<span class="token punctuation">;</span>
+    <span class="token function">set_tot</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ <span class="token punctuation">}</span>
+</code></pre>
+<p>使用方法有：</p>
+<pre><code class="prism language-cpp">stock f<span class="token operator">=</span><span class="token function">stock</span><span class="token punctuation">(</span><span class="token string">"world"</span><span class="token punctuation">,</span><span class="token number">250</span><span class="token punctuation">,</span><span class="token number">1.25</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+stock <span class="token function">f</span><span class="token punctuation">(</span><span class="token string">"world"</span><span class="token punctuation">,</span><span class="token number">250</span><span class="token punctuation">,</span><span class="token number">1.25</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+stock <span class="token operator">*</span>pstock <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token function">stock</span><span class="token punctuation">(</span><span class="token string">"world"</span><span class="token punctuation">,</span><span class="token number">250</span><span class="token punctuation">,</span><span class="token number">1.25</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">//如果未提供显式初始值，我们通常不初始化它的成员</span>
+<span class="token comment">//因此，我们设计构造函数的时候可以参数全空，然后在函数体里面设定默认参数值</span>
+</code></pre>
+<p>构造函数可以重载，但下面这个就无法重载了呢——析构函数<br>
+构造函数利用new分配内存，那么要清理掉中间内存，就要用析构函数delete。构造函数与类同名，那析构函数就在类名前加个波浪号~stock()。它可能不会干什么重要工作（因为把它执行了这个对象就无了），所以里面可以什么都不穿。不过，为了看一看它的秘密，我们可以在它身上写上：提示信息，告诉你啥时候被调用然后内存无了。</p>
+<h2><a id="4_this_146"></a>4. this指针</h2>
+<p><a href="https://blog.csdn.net/hk121/article/details/81222819?biz_id=102&amp;utm_term=c%20%20this%E6%8C%87%E9%92%88%E7%9A%84%E7%94%A8%E6%B3%95&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-0-81222819&amp;spm=1018.2118.3001.4187">this指针</a></p>
+<h2><a id="5__148"></a>5. 运算符重载</h2>
+<p>很多运算符也是重载的，比如说，*，可以作为数学乘积，也可以作为指针符号。再者，我们说，C风格的字符串不能简单地拼接要用函数，可是类定义的字符串用一个+就可以拼起来。这实际上也是一种运算符重载，隐藏机理，强调实质，这是OOP的另一个目标。</p>
+<pre><code class="prism language-cpp"><span class="token operator">&lt;</span>返回类型说明符<span class="token operator">&gt;</span> <span class="token keyword">operator</span> <span class="token operator">&lt;</span>运算符符号<span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token operator">&lt;</span>参数表<span class="token operator">&gt;</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+ 
+     <span class="token operator">&lt;</span>函数体<span class="token operator">&gt;</span>
+ 
+<span class="token punctuation">}</span>
+</code></pre>
+<p>例如：</p>
+<pre><code class="prism language-cpp"><span class="token macro property">#<span class="token directive keyword">ifndef</span> _ARRAY_H_</span>
+<span class="token macro property">#<span class="token directive keyword">define</span> _ARRAY_H_</span>
+<span class="token keyword">class</span> <span class="token class-name">Array</span>
+<span class="token punctuation">{</span>
+<span class="token keyword">private</span><span class="token operator">:</span>
+    <span class="token keyword">int</span> mLength<span class="token punctuation">;</span><span class="token comment">//数组的长度</span>
+    <span class="token keyword">int</span><span class="token operator">*</span> mSpace<span class="token punctuation">;</span><span class="token comment">//指向数组的指针</span>
+
+<span class="token keyword">public</span><span class="token operator">:</span>
+    <span class="token function">Array</span><span class="token punctuation">(</span><span class="token keyword">int</span> length<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//构造函数</span>
+    <span class="token function">Array</span><span class="token punctuation">(</span><span class="token keyword">const</span> Array<span class="token operator">&amp;</span> obj<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//拷贝构造函数</span>
+    <span class="token keyword">int</span> <span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//数组长度</span>
+    <span class="token keyword">void</span> <span class="token function">setData</span><span class="token punctuation">(</span><span class="token keyword">int</span> index<span class="token punctuation">,</span> <span class="token keyword">int</span> value<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//往数组中放元素</span>
+    <span class="token keyword">int</span> <span class="token function">getData</span><span class="token punctuation">(</span><span class="token keyword">int</span> index<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//从数组中取元素</span>
+    <span class="token operator">~</span><span class="token function">Array</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//析构函数</span>
+<span class="token keyword">public</span><span class="token operator">:</span>
+	<span class="token keyword">int</span><span class="token operator">&amp;</span> <span class="token keyword">operator</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span>       <span class="token comment">//[]运算符重载</span>
+	Array<span class="token operator">&amp;</span> <span class="token keyword">operator</span><span class="token operator">=</span><span class="token punctuation">(</span>Array <span class="token operator">&amp;</span>a2<span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">//=运算符重载</span>
+	<span class="token keyword">bool</span> <span class="token keyword">operator</span><span class="token operator">==</span><span class="token punctuation">(</span>Array<span class="token operator">&amp;</span> a1<span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">//==运算符重载</span>
+	<span class="token keyword">bool</span> <span class="token keyword">operator</span><span class="token operator">!=</span><span class="token punctuation">(</span>Array<span class="token operator">&amp;</span> a1<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//！=运算符重载</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token macro property">#<span class="token directive keyword">endif</span></span>
+<span class="token comment">/*
+小知识：#ifndef,#define,#endif的作用是防止头文件被多次定义
+*/</span>
+
+</code></pre>
+<pre><code class="prism language-cpp"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">"iostream"</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">"Array.h"</span></span>
+<span class="token keyword">using</span> <span class="token keyword">namespace</span> std<span class="token punctuation">;</span>
+Array<span class="token operator">::</span><span class="token function">Array</span><span class="token punctuation">(</span><span class="token keyword">int</span> length<span class="token punctuation">)</span><span class="token comment">//构造函数</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span> length <span class="token operator">&lt;</span> <span class="token number">0</span> <span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        length <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    
+    mLength <span class="token operator">=</span> length<span class="token punctuation">;</span>
+    mSpace <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token keyword">int</span><span class="token punctuation">[</span>mLength<span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+Array<span class="token operator">::</span><span class="token function">Array</span><span class="token punctuation">(</span><span class="token keyword">const</span> Array<span class="token operator">&amp;</span> obj<span class="token punctuation">)</span><span class="token comment">//拷贝构造函数</span>
+<span class="token punctuation">{</span>
+    mLength <span class="token operator">=</span> obj<span class="token punctuation">.</span>mLength<span class="token punctuation">;</span>
+    
+    mSpace <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token keyword">int</span><span class="token punctuation">[</span>mLength<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    
+    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span>mLength<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        mSpace<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> obj<span class="token punctuation">.</span>mSpace<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> Array<span class="token operator">::</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token comment">//获取数组长度</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">return</span> mLength<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">void</span> Array<span class="token operator">::</span><span class="token function">setData</span><span class="token punctuation">(</span><span class="token keyword">int</span> index<span class="token punctuation">,</span> <span class="token keyword">int</span> value<span class="token punctuation">)</span><span class="token comment">//往数组中放元素</span>
+<span class="token punctuation">{</span>
+    mSpace<span class="token punctuation">[</span>index<span class="token punctuation">]</span> <span class="token operator">=</span> value<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> Array<span class="token operator">::</span><span class="token function">getData</span><span class="token punctuation">(</span><span class="token keyword">int</span> index<span class="token punctuation">)</span><span class="token comment">//从数组中取元素</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">return</span> mSpace<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+Array<span class="token operator">::</span><span class="token operator">~</span><span class="token function">Array</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token comment">//析构函数</span>
+<span class="token punctuation">{</span>
+    mLength <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token keyword">delete</span><span class="token punctuation">[</span><span class="token punctuation">]</span> mSpace<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+
+</code></pre>
+<pre><code class="prism language-cpp">Array<span class="token operator">&amp;</span> Array<span class="token operator">::</span><span class="token keyword">operator</span><span class="token operator">=</span><span class="token punctuation">(</span>Array <span class="token operator">&amp;</span>a2<span class="token punctuation">)</span><span class="token comment">//注意：这里返回的是引用，为了支持 “连等”</span>
+<span class="token punctuation">{</span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>a2 <span class="token operator">==</span> <span class="token keyword">this</span><span class="token punctuation">)</span>
+	<span class="token punctuation">{</span>
+		<span class="token keyword">return</span> <span class="token operator">*</span><span class="token keyword">this</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token operator">-</span><span class="token operator">&gt;</span>mSpace <span class="token operator">!=</span> <span class="token constant">NULL</span><span class="token punctuation">)</span>
+	<span class="token punctuation">{</span>
+		<span class="token keyword">delete</span><span class="token punctuation">[</span><span class="token punctuation">]</span> mSpace<span class="token punctuation">;</span>
+		mLength <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">this</span><span class="token operator">-</span><span class="token operator">&gt;</span>mLength <span class="token operator">=</span> a2<span class="token punctuation">.</span>mLength<span class="token punctuation">;</span>
+	<span class="token keyword">this</span><span class="token operator">-</span><span class="token operator">&gt;</span>mSpace <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token keyword">this</span><span class="token operator">-</span><span class="token operator">&gt;</span>mLength<span class="token punctuation">]</span><span class="token punctuation">;</span>
+	<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>i<span class="token operator">&lt;</span> <span class="token keyword">this</span><span class="token operator">-</span><span class="token operator">&gt;</span>mLength <span class="token punctuation">;</span>i<span class="token operator">++</span><span class="token punctuation">)</span>
+	<span class="token punctuation">{</span>
+		mSpace<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> a2<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">return</span> <span class="token operator">*</span><span class="token keyword">this</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+<p>更加具体可以看看这个：<a href="https://blog.csdn.net/lishuzhai/article/details/50781753?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522159946840119725222424449%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&amp;request_id=159946840119725222424449&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v3~pc_rank_v2-1-50781753.first_rank_ecpm_v3_pc_rank_v2&amp;utm_term=c%2b%2b%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD&amp;spm=1018.2118.3001.4187">详解</a><br>
+另外：<br>
+<img src="https://img-blog.csdn.net/20180509161753973?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2RhaV93ZW4=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70#pic_center" alt="在这里插入图片描述"></p>
+<ul>
+<li>重载后的运算符必须至少有一个操作数是用户定义的类型，这将防止用户为标准类型重载运算符</li>
+<li>使用运算符时不能违反原来的句法规则和优先级</li>
+<li>不能创建新的运算符</li>
+<li>有些运算符不能重载（见上图）</li>
+<li>有些运算符只能通过成员函数重载</li>
+</ul>
+<h2><a id="6__273"></a>6. 友元</h2>
+<p>为了处理private类型下属性的访问问题，C++语法中加入友元这一语法。</p>
+<ul>
+<li>友元函数</li>
+<li>友元类</li>
+<li>友元方法</li>
+</ul>
+<p>创建友元：</p>
+<ol>
+<li>将原型放在类声明中，并在声明前加上关键词friend<br>
+friend Time operator* (double m, const Time &amp;t);<br>
+该原型意味着以下两点：</li>
+</ol>
+<ul>
+<li>虽然operator *是类声明中声明，但并非成员函数，故不能用成员运算符调用</li>
+<li>虽然不是成员但与成员函数访问权限相同</li>
+</ul>
+<ol start="2">
+<li>定义类，莫出现关键词friend</li>
+</ol>
+<pre><code class="prism language-cpp"><span class="token macro property">#<span class="token directive keyword">ifndef</span> A_H</span>
+<span class="token macro property">#<span class="token directive keyword">define</span> A_H</span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;iostream&gt;</span></span>
+<span class="token keyword">using</span> std<span class="token operator">::</span>cout<span class="token punctuation">;</span>
+<span class="token keyword">using</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
+<span class="token keyword">class</span> <span class="token class-name">B</span><span class="token punctuation">;</span><span class="token comment">//前向声明</span>
+<span class="token keyword">class</span> <span class="token class-name">A</span>
+<span class="token punctuation">{</span>
+<span class="token keyword">public</span><span class="token operator">:</span>
+    <span class="token keyword">void</span> <span class="token function">dis</span><span class="token punctuation">(</span><span class="token keyword">const</span> B <span class="token operator">&amp;</span>b<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//只是一个成员函数声明，故B无需现在创建，可以用前向声明 class B;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token macro property">#<span class="token directive keyword">endif</span></span>
+ 
+<span class="token macro property">#<span class="token directive keyword">ifndef</span> B_H</span>
+<span class="token macro property">#<span class="token directive keyword">define</span> B_H</span>
+<span class="token comment">//class A;//因先 #include "A.h" ，再包含 #include "B.h" ,故可以省略前向声明(A已先定义)</span>
+<span class="token keyword">class</span> <span class="token class-name">B</span>
+<span class="token punctuation">{</span>
+<span class="token keyword">private</span><span class="token operator">:</span>
+    <span class="token keyword">int</span> i<span class="token punctuation">;</span>
+<span class="token keyword">public</span><span class="token operator">:</span>
+    <span class="token function">B</span><span class="token punctuation">(</span><span class="token keyword">int</span> v<span class="token punctuation">)</span><span class="token operator">:</span><span class="token function">i</span><span class="token punctuation">(</span>v<span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+    <span class="token function">B</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span><span class="token function">i</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+ 
+ 
+    <span class="token comment">//友元声明</span>
+    <span class="token keyword">friend</span> <span class="token keyword">void</span> A<span class="token operator">::</span><span class="token function">dis</span><span class="token punctuation">(</span><span class="token keyword">const</span> B <span class="token operator">&amp;</span>a<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//其它类的成员函数作为友元函数</span>
+    <span class="token keyword">friend</span> <span class="token keyword">void</span> <span class="token function">test</span><span class="token punctuation">(</span><span class="token keyword">const</span> B<span class="token operator">&amp;</span> b<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//普通的非成员函数作为友元函数</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token macro property">#<span class="token directive keyword">endif</span></span>
+<span class="token macro property">#<span class="token directive keyword">ifndef</span> C_H</span>
+<span class="token macro property">#<span class="token directive keyword">define</span> C_H</span>
+<span class="token keyword">class</span> <span class="token class-name">C</span>
+<span class="token punctuation">{</span>
+<span class="token keyword">private</span><span class="token operator">:</span> 
+    <span class="token keyword">int</span> c<span class="token punctuation">;</span>
+<span class="token keyword">public</span><span class="token operator">:</span>
+    <span class="token function">C</span><span class="token punctuation">(</span><span class="token keyword">int</span> v<span class="token punctuation">)</span><span class="token operator">:</span><span class="token function">c</span><span class="token punctuation">(</span>v<span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+    <span class="token keyword">friend</span> <span class="token keyword">class</span> <span class="token class-name">D</span><span class="token punctuation">;</span><span class="token comment">//友元类，只是一个声明,不作为成员一部分，故无需先创建D的定义</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token macro property">#<span class="token directive keyword">endif</span></span>
+<span class="token macro property">#<span class="token directive keyword">ifndef</span> D_H</span>
+<span class="token macro property">#<span class="token directive keyword">define</span> D_H</span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;iostream&gt;</span></span>
+<span class="token keyword">using</span> std<span class="token operator">::</span>cout<span class="token punctuation">;</span>
+<span class="token keyword">using</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
+<span class="token comment">//class C;//因先 #include "C.h" ，再包含 #include "D.h" ,故此语句可以省略</span>
+<span class="token keyword">class</span> <span class="token class-name">D</span>
+<span class="token punctuation">{</span>
+<span class="token keyword">public</span><span class="token operator">:</span>
+    <span class="token keyword">void</span> <span class="token function">dis</span><span class="token punctuation">(</span><span class="token keyword">const</span> C<span class="token operator">&amp;</span> c<span class="token punctuation">)</span><span class="token comment">//dis成员函数定义，这里要用到形参C，故C必须先定义完整，所以先#include "C.h"</span>
+    <span class="token punctuation">{</span>
+        cout<span class="token operator">&lt;&lt;</span>c<span class="token punctuation">.</span>c<span class="token operator">&lt;&lt;</span>endl<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token macro property">#<span class="token directive keyword">endif</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;iostream&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">"A.h"</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">"B.h"</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">"C.h"</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">"D.h"</span></span>
+<span class="token keyword">using</span> <span class="token keyword">namespace</span> std<span class="token punctuation">;</span>
+ 
+ 
+<span class="token keyword">void</span> A<span class="token operator">::</span><span class="token function">dis</span><span class="token punctuation">(</span><span class="token keyword">const</span> B <span class="token operator">&amp;</span>b<span class="token punctuation">)</span><span class="token comment">//必须最后定义，因需要两个类完整定义后，才能定义该成员函数</span>
+<span class="token punctuation">{</span>
+    cout<span class="token operator">&lt;&lt;</span>b<span class="token punctuation">.</span>i<span class="token operator">&lt;&lt;</span>endl<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+ 
+<span class="token keyword">void</span> <span class="token function">test</span><span class="token punctuation">(</span><span class="token keyword">const</span> B <span class="token operator">&amp;</span>b<span class="token punctuation">)</span><span class="token comment">//普通的非成员函数作为友元函数</span>
+<span class="token punctuation">{</span>
+    cout<span class="token operator">&lt;&lt;</span>b<span class="token punctuation">.</span>i<span class="token operator">&lt;&lt;</span>endl<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+ 
+ 
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment">//其他类的成员函数作为友元函数</span>
+    A a<span class="token punctuation">;</span>
+    B <span class="token function">b</span><span class="token punctuation">(</span><span class="token number">9</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    a<span class="token punctuation">.</span><span class="token function">dis</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">//普通的非成员函数作为友元函数</span>
+    <span class="token function">test</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span><span class="token punctuation">;</span>
+ 
+    <span class="token comment">//友元类举例</span>
+    C <span class="token function">c</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    D d<span class="token punctuation">;</span>
+    d<span class="token punctuation">.</span><span class="token function">dis</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">;</span>
+ 
+    <span class="token function">system</span><span class="token punctuation">(</span><span class="token string">"pause"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+</br>
+  </br>
+  <h1>目录</h1>
+<ul type="circle">                     
+    <li><a href="https://jokerzaia.github.io/C-C++/C++primerplus学习/第1-3章">第1-3章</a></li>
+    <li><a href="https://jokerzaia.github.io/C-C++/C++primerplus学习/第4-6章">第4-6章</a></li>
+    <li><a href="https://jokerzaia.github.io/C-C++/C++primerplus学习/第7-8章">第7-8章</a></li>
+    <li><a href="https://jokerzaia.github.io/C-C++/C++primerplus学习/第9章">第9章</a></li>
+    <li><a href="https://jokerzaia.github.io/C-C++/C++primerplus学习/第10-11章">第10-11章</a></li>
+    <li><a href="https://jokerzaia.github.io/C-C++/C++primerplus学习/第12-13章">第12-13章</a></li>
+    <li><a href="https://jokerzaia.github.io/C-C++/C++primerplus学习/第14-15章">第14-15章</a></li>
+    <li><a href="https://jokerzaia.github.io/C-C++/C++primerplus学习/第16-18章">第16-18章</a></li>
+</ul>
+</div>
+</body>
+</body>
+</html>
