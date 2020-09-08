@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title></title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1><a id="1618_0"></a>第16-18章</h1>
+  <body background="8.jpg" style=" background-repeat:no-repeat ;background-size:100% 100%;background-attachment: fixed;">
+  <div style="background-color：rgba(255,255,255,0.2);"></div>
+<h1><a id="_1"></a>文件读取</h1>
+<h2><a id="IO_2"></a>I/O流</h2>
+<p>在C++中  的文件流 是以外存文件为输入输出对象的数据流。输出文件流表示从内存流向外存文件的数据，输入文件流则相反。</p>
+<p>根据文件中数据的组织形式，文件可分为两类：文本文件和二进制文件。文本文件又称为ASCII文件，它的每个字节存放一个ASCII码，代表一个字符。二进制文件则是把内存中的数据，按照其在内存中的存储形式原样写在磁盘上存放。比如一个整数20000，在内存中在两个字节，而按文本形式输出则占5个字节。因此在以文本形式输出时，一个字节对应一个字符，因而便于字符的输出，缺点则是占用存储空间较多。用二进制形式输出数据，节省了转化时间和存储空间，但不能直接以字符的形式输出。</p>
+<p>用于文件IO操作的流类主要有三个fstream(输入输出文件流),ifstream(输入文件流)和ofstream(输出文件流)；而这三个类都包含在头文件fstream中，所以程序中对文件进行操作必须包含该头文件。</p>
+<h2><a id="cout_9"></a>cout</h2>
+<p>1、使用get()函数输入单个字符：输入单个字符的get()函数都是类istream 中的成员函数，调用他们需要使用类的对象<br>
+来调用，该函数有两个原型，即get(char &amp;ch)和get(void)。<br>
+a、get(char &amp;ch)函数：该函数返回调用对象的引用，这里要注意该函数的参数类型必须要是char类型的，不能是int<br>
+型变量，比如cin.get(a)其中参数a 只能是char 类型，不能是int 型，如果是int 型则会出现错误。该函数可以连<br>
+续输入，即cin.get(a).get(a)；<br>
+b、get(void)函数：该函数反回int型的值，调用该get函数时不需要使用参数。该函数不能连续输入，比如cin.get().get()<br>
+就是错误的。<br>
+c、两个get函数都接收输入的单个字符，且不跳过空白符号和回车换行符。如果输入了2个以上的字符，则以后的<br>
+字符保存在输入流中，留给下一次输入。比如有char a; cin.get(a);cout&lt;&lt;a; cin.get(a); cout&lt;&lt;a;如果输入a并按回车<br>
+的话，则第二次的get调用将不会再提示输入字符，而是接受了第一次输入的单个字符a后面的回车换行了，所<br>
+以最后只输入一次，并输出a 再换行。同样如果连续输入两个字符比如ad 则第一个字符a 赋给第一个变量，第<br>
+二个字符d赋给第二个变量，同样不会出现提示两次输入的情况，这不是我们所预期希望的效果。同样get()函数<br>
+有同样的笑果，即char a; a=cin.get(); cout&lt;&lt;a; a=cin.get(); cout&lt;&lt;a;如果输入a并按回车，有和get(char &amp;ch)同样的<br>
+笑果。注意使用&gt;&gt;操作符输入时将忽略掉空格和回车换行符等符号，而get函数则不会。解决上述问题的方法是<br>
+在第二次输入前使用ignore()函数读取并丢弃剩下的字符，这样就会提示两次输入。</p>
+<p>2、使用get和getline函数输入字符串：<br>
+a、字符串输入的get和getline函数原型如下：get(char <em>, int ,char); get(char</em> ,int); getline(char*,int ,char); getline(char*,int);<br>
+其反回类型都为istream &amp;也就是说这几个函数都可以拼接输出。其中两个参数的函数输入指定长度的字符串，第二<br>
+个参数的数目要比将要输入的字符数目大1，因为最后一个字符将作为字符串结尾的字符。带有三个参数的函数的<br>
+第三个参数是分界符字符，也就是说当输入时遇到第三个字符就不会再输入后面的字符了，即使输入的字符串没有<br>
+达到指定的长度。<br>
+b、get 与getline 的区别是get 函数将分界符留在输入流中，这样下次再输入时将输入的是这个分界符。而getline 则是<br>
+读取并丢弃这个分界符。比如cin.get(a,3,’z’)如果输入abz 则字符z 将留在输入流中，等待下一次输入，比如在get<br>
+函数后接着有cin&gt;&gt;b;则字符z将赋给变量b，而不会再次提示输入。<br>
+c、输入的字符数超过了指定数量长度时的处理情况：对于getline函数来说，如果输入的字符数大于指定的字符数的长<br>
+度，且最后一个字符不是分界符时，将设置failbit 位。比如cin.getline(a,3,’z’)如果输入abdc,则会设置failbit 位，而<br>
+如果输入abzde则不会设置failbit位，因为虽然输入超过了指定的长度，但是最后一个字符是分界符z，所以不会设<br>
+置failbit位，而会将分界字符z后面的字符留在输入流中，留给下一次输入。而对于get函数当输入的字符数超过了<br>
+指定的长度时则不会设置failbit位，对于get函数可以使用peek()函数来检查是否程序是正常结束输入。如果使用get<br>
+函数输入超出指定数目的字符时，多于的字符将作为下一次输入的字符，而对于getline函数而言则会关闭下一次输<br>
+入，因为getline 函数在输入的字符数超过了指定的数量时将设置状态位failbit，在状态位被清除前输入会被关闭，<br>
+除非被重设。对于这两个函数而言，当达到文件尾时都将设置eofbit位，流被破坏时设置badbit位。<br>
+d、输入是空字符时的处理情况：对于get 函数而言，如果输入的是一个空字符则会设置failbit 位，但对于getline 函数<br>
+来说则不会设置该位。比如cin.get(a,3);这时如果输入时直接按下回车的话将使get函数设置failbit位，而对于getline<br>
+函数而言则不会设置该位。<br>
+e、对于以上的get 和getline 函数，不管是输入的是单个字符还是字符串，都需要使用ignore 函数来读取并丢弃多余的<br>
+输入字符，以使后面的输入程序能正常的工作。</p>
+<p>3、read()函数：函数原型为iostream&amp; read(const char* addr,streamsize n)。调用方法为cin.read(a,144)；表示输入144个<br>
+字符放到地址从a 开始的内存中，如果还未读取144 个字符就到达了文件末尾，就设置ios::failbit。read 函数与get<br>
+和getline不同的是read函数不会在输入后加上空值字符，与就是说输入的数目不必比指定的数目少1，也就是不能<br>
+将输入的字符转换为字符串了。read函数可以拼接。</p>
+<p>4、readsome()函数：原型为iostream&amp; readsome(char* addr,streamsize n)。表示把n个字符放到地址从addr开始的内存中，<br>
+该函数和read函数差不多，区别在于，如果没有读取n个字符，则设置文件结束状态位ios::eofbit。</p>
+<p>5、write()函数：原型为iostream&amp; write(const char* addr,streamsize n);表示把从地址addr开始的n个字符写入到流中。</p>
+<p>6、peek()函数：peek 函数反回输入流中的下一个字符，但不抽取输入流中的字符，也就是说他使得能够查看下一个输<br>
+入字符。</p>
+<p>7、gcount()函数：反回最后一个非格式化抽取方法读取的字符数。非格式化抽取方法即get 和getline 这样的函数，&gt;&gt;<br>
+这个运算符是格式化抽取方法。</p>
+<p>8、strlen()函数：计算数组中的字符数，这种方法比使用gcount函数计算字符数要快。</p>
+<h2><a id="cin_75"></a>cin</h2>
+<p>cin是C++编程语言中的标准输入流对象，即istream类的对象。cin主要用于从标准输入读取数据，这里的标准输入，指的是终端的键盘。此外，cout是流的对象，即ostream类的对象，cerr是标准错误输出流的对象，也是ostream 类的对象。这里的标准输出指的是终端键盘，标准错误输出指的是终端的屏幕。</p>
+<p>在理解cin功能时，不得不提标准输入缓冲区。当我们从键盘输入字符串的时候需要敲一下回车键才能够将这个字符串送入到缓冲区中，那么敲入的这个回车键(\r)会被转换为一个换行符\n，这个换行符\n也会被存储在cin的缓冲区中并且被当成一个字符来计算！比如我们在键盘上敲下了123456这个字符串，然后敲一下回车键（\r）将这个字符串送入了缓冲区中，那么此时缓冲区中的字节个数是7 ，而不是6。</p>
+<p>cin读取数据也是从缓冲区中获取数据，缓冲区为空时，cin的成员函数会阻塞等待数据的到来，一旦缓冲区中有数据，就触发cin的成员函数去读取数据。</p>
+<p>主要用法：cin.get(), cin.getline()</p>
+<h2><a id="IO_83"></a>文件I/O</h2>
+<pre><code class="prism language-cpp"><span class="token macro property">#<span class="token directive keyword">include</span><span class="token string">&lt;iostream&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span><span class="token string">&lt;fstream&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span><span class="token string">&lt;string&gt;</span></span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+  <span class="token keyword">using</span> <span class="token keyword">namespace</span> std<span class="token punctuation">;</span>
+  string filename<span class="token punctuation">;</span>
+  cout<span class="token operator">&lt;&lt;</span><span class="token string">"enter your filename:"</span><span class="token punctuation">;</span>
+  cin<span class="token operator">&gt;&gt;</span>filename<span class="token punctuation">;</span>
+
+  ofstream <span class="token function">fout</span><span class="token punctuation">(</span>filename<span class="token punctuation">.</span><span class="token function">c_str</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  fout<span class="token operator">&lt;&lt;</span><span class="token string">"for your eyes only"</span><span class="token operator">&lt;&lt;</span>endl<span class="token punctuation">;</span>
+  <span class="token keyword">float</span> secret<span class="token punctuation">;</span>
+  cin<span class="token operator">&gt;&gt;</span>secret<span class="token punctuation">;</span>
+  fout<span class="token operator">&lt;&lt;</span><span class="token string">"your secret number is:"</span><span class="token operator">&lt;&lt;</span>secret<span class="token operator">&lt;&lt;</span>endl<span class="token punctuation">;</span>
+  fout<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ 
+  ifstream <span class="token function">fin</span><span class="token punctuation">(</span>filename<span class="token punctuation">.</span><span class="token function">c_str</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  cout<span class="token operator">&lt;&lt;</span><span class="token string">"here are the contents of "</span><span class="token operator">&lt;&lt;</span>filename<span class="token operator">&lt;&lt;</span>endl<span class="token punctuation">;</span>
+  <span class="token keyword">char</span> ch<span class="token punctuation">;</span>
+  <span class="token keyword">while</span><span class="token punctuation">(</span>fin<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>ch<span class="token punctuation">)</span><span class="token punctuation">)</span> cout<span class="token operator">&lt;&lt;</span>ch<span class="token punctuation">;</span>
+  cout<span class="token operator">&lt;&lt;</span><span class="token string">"done"</span><span class="token operator">&lt;&lt;</span>endl<span class="token punctuation">;</span>
+  fin<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  
+  <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h1><a id="STL_114"></a>STL</h1>
+<p><a href="https://blog.csdn.net/u010183728/article/details/81913729?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522159956220719724835855222%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&amp;request_id=159956220719724835855222&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_click~default-1-81913729.first_rank_ecpm_v3_pc_rank_v2&amp;utm_term=STL&amp;spm=1018.2118.3001.4187">一个大佬的STL解读</a><br>
+<a href="https://blog.csdn.net/qq_42322103/article/details/99685797?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522159956220719724835855222%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&amp;request_id=159956220719724835855222&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_click~default-2-99685797.first_rank_ecpm_v3_pc_rank_v2&amp;utm_term=STL&amp;spm=1018.2118.3001.4187">另外一个大佬的作品</a><br>
+概述<br>
+长久以来，软件界一直希望建立一种可重复利用的东西，以及一种得以制造出”可重复运用的东西”的方法，从函数(functions)，类别(classes),函数库(function libraries),类别库(class libraries)、各种组件，从模块化设计，到面向对象(object oriented )，为的就是复用性的提升。</p>
+<p>复用性必须建立在某种标准之上。但是在许多环境下，就连软件开发最基本的数据结构(data structures) 和算法(algorithm)都未能有一套标准。大量程序员被迫从事大量重复的工作，竟然是为了完成前人已经完成而自己手上并未拥有的程序代码，这不仅是人力资源的浪费，也是挫折与痛苦的来源。</p>
+<p>为了建立数据结构和算法的一套标准，并且降低他们之间的耦合关系，以提升各自的独立性、弹性、交互操作性(相互合作性,interoperability),诞生了STL。</p>
+<p>STL(Standard Template Library,标准模板库)，是惠普实验室开发的一系列软件的统称。现在主要出现在 c++中，但是在引入 c++之前该技术已经存在很长时间了。</p>
+<p>STL 从广义上分为: 容器(container) 算法(algorithm) 迭代器(iterator)。</p>
+<p>容器和算法之间通过迭代器进行无缝连接。STL 几乎所有的代码都采用了模板类或者模板函数，这相比传统的由函数和类组成的库来说提供了更好的代码重用机会。</p>
+<p>STL(Standard Template Library)标准模板库,在我们 c++标准程序库中隶属于 STL 的占到了 80%以上。</p>
+<p>STL六大组件简介<br>
+STL提供了六大组件，彼此之间可以组合套用，这六大组件分别是:容器、算法、迭代器、仿函数、适配器（配接器）、空间配置器。</p>
+<p>容器：各种数据结构，如vector、list、deque、set、map等,用来存放数据，从实现角度来看，STL容器是一种class template。</p>
+<p>算法：各种常用的算法，如sort、find、copy、for_each。从实现的角度来看，STL算法是一种function tempalte.</p>
+<p>迭代器：扮演了容器与算法之间的胶合剂，共有五种类型，从实现角度来看，迭代器是一种将operator* , operator-&gt; , operator++,operator–等指针相关操作予以重载的class template. 所有STL容器都附带有自己专属的迭代器，只有容器的设计者才知道如何遍历自己的元素。原生指针(native pointer)也是一种迭代器。</p>
+<p>仿函数：行为类似函数，可作为算法的某种策略。从实现角度来看，仿函数是一种重载了operator()的class 或者class template</p>
+<p>适配器：一种用来修饰容器或者仿函数或迭代器接口的东西。</p>
+<p>空间配置器：负责空间的配置与管理。从实现角度看，配置器是一个实现了动态空间配置、空间管理、空间释放的class tempalte.</p>
+<p>STL六大组件的交互关系，容器通过空间配置器取得数据存储空间，算法通过迭代器存储容器中的内容，仿函数可以协助算法完成不同的策略的变化，适配器可以修饰仿函数。</p>
+<p>STL的优点很明显了：</p>
+<p>STL 是 C++的一部分，因此不用额外安装什么，它被内建在你的编译器之内。<br>
+STL 的一个重要特性是将数据和操作分离。数据由容器类别加以管理，操作则由可定制的算法定义。迭代器在两者之间充当“粘合剂”,以使算法可以和容器交互运作<br>
+程序员可以不用思考 STL 具体的实现过程，只要能够熟练使用 STL 就 OK 了。这样他们就可以把精力放在程序开发的别的方面。<br>
+STL 具有高可重用性，高性能，高移植性，跨平台的优点。<br>
+高可重用性：STL 中几乎所有的代码都采用了模板类和模版函数的方式实现，这相比于传统的由函数和类组成的库来说提供了更好的代码重用机会。<br>
+高性能：如 map 可以高效地从十万条记录里面查找出指定的记录，因为 map 是采用红黑树的变体实现的。<br>
+高移植性：如在项目 A 上用 STL 编写的模块，可以直接移植到项目 B 上。<br>
+三大组件介绍</p>
+<ol>
+<li>容器<br>
+几乎可以说，任何特定的数据结构都是为了实现某种特定的算法。STL容器就是将运用最广泛的一些数据结构实现出来。<br>
+常用的数据结构：数组(array) , 链表(list), tree(树)，栈(stack), 队列(queue), 集合(set),映射表(map), 根据数据在容器中的排列特性，这些数据分为序列式容器和关联式容器两种。</li>
+</ol>
+<p>序列式容器强调值的排序，序列式容器中的每个元素均有固定的位置，除非用删除或插入的操作改变这个位置。Vector容器、Deque容器、List容器等。<br>
+关联式容器是非线性的树结构，更准确的说是二叉树结构。各元素之间没有严格的物理上的顺序关系，也就是说元素在容器中并没有保存元素置入容器时的逻辑顺序。关联式容器另一个显著特点是：在值中选择一个值作为关键字key，这个关键字对值起到索引的作用，方便查找。Set/multiset容器 Map/multimap容器</p>
+<ol start="2">
+<li>算法<br>
+算法，问题的解法，以有限的步骤，解决逻辑或数学上的问题。</li>
+</ol>
+<p>我们所编写的每个程序都是一个算法，其中的每个函数也都是一个算法，毕竟它们都是用来解决或大或小的逻辑问题或数学问题。STL收录的算法经过了数学上的效能分析与证明，是极具复用价值的，包括常用的排序，查找等等。特定的算法往往搭配特定的数据结构，算法与数据结构相辅相成。</p>
+<p>算法分为:质变算法和非质变算法。</p>
+<p>质变算法：是指运算过程中会更改区间内的元素的内容。例如拷贝，替换，删除等等<br>
+非质变算法：是指运算过程中不会更改区间内的元素内容，例如查找、计数、遍历、寻找极值等等</p>
+<ol start="3">
+<li>迭代器<br>
+迭代器(iterator)是一种抽象的设计概念，现实程序语言中并没有直接对应于这个概念的实物。 在&lt;&gt;一书中提供了23种设计模式的完整描述， 其中iterator模式定义如下：提供一种方法，使之能够依序寻访某个容器所含的各个元素，而又无需暴露该容器的内部表示方式。</li>
+</ol>
+<p>迭代器的设计思维-STL的关键所在，STL的中心思想在于将容器(container)和算法(algorithms)分开，彼此独立设计，最后再一贴胶着剂将他们撮合在一起。</p>
+<p>从技术角度来看，容器和算法的泛型化并不困难，c++的class template和function template可分别达到目标，如果设计出两这个之间的良好的胶着剂，才是大难题。</p>
+<p>常用容器</p>
+<ol>
+<li>string</li>
+<li>vector</li>
+<li>list</li>
+<li>stack</li>
+<li>deque</li>
+<li>set</li>
+<li>map</li>
+</ol>
+</br>
+  </br>
+  <h1>目录</h1>
+<ul type="circle">                     
+    <li><a href="https://jokerzaia.github.io/C-C++/C++primerplus学习/第1-3章">第1-3章</a></li>
+    <li><a href="https://jokerzaia.github.io/C-C++/C++primerplus学习/第4-6章">第4-6章</a></li>
+    <li><a href="https://jokerzaia.github.io/C-C++/C++primerplus学习/第7-8章">第7-8章</a></li>
+    <li><a href="https://jokerzaia.github.io/C-C++/C++primerplus学习/第9章">第9章</a></li>
+    <li><a href="https://jokerzaia.github.io/C-C++/C++primerplus学习/第10-11章">第10-11章</a></li>
+    <li><a href="https://jokerzaia.github.io/C-C++/C++primerplus学习/第12-13章">第12-13章</a></li>
+    <li><a href="https://jokerzaia.github.io/C-C++/C++primerplus学习/第14-15章">第14-15章</a></li>
+    <li><a href="https://jokerzaia.github.io/C-C++/C++primerplus学习/第16-18章">第16-18章</a></li>
+</ul>
+</div>
+</body>
+</body>
+</html>
